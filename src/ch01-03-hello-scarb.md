@@ -31,4 +31,4 @@ As the result of running scarb new, Scarb has created two files:
 - `Scarb.toml` - a configuration file for Scarb
 - `src/lib.cairo`
 
-## Building and Running a Scarb Project
+## Compile
