@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-01-title.html">The Cairo programming language</a></li><li class="chapter-item expanded affix "><a href="ch00-02-foreword.html">Foreword</a></li><li class="chapter-item expanded affix "><a href="ch00-03-intro.html">Introduction</a></li><li class="chapter-item expanded "><a href="ch01-00-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-hello-world.html"><strong aria-hidden="true">1.2.</strong> Hello, World!</a></li><li class="chapter-item expanded "><a href="ch01-03-hello-scarb.html"><strong aria-hidden="true">1.3.</strong> Hello, Scarb!</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="ch00-01-title.html">The Cairo programming language</a></li><li class="chapter-item expanded affix "><a href="ch00-02-foreword.html">Foreword</a></li><li class="chapter-item expanded affix "><a href="ch00-03-intro.html">Introduction</a></li><li class="chapter-item expanded "><a href="ch01-00-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-hello-world.html"><strong aria-hidden="true">1.2.</strong> Hello, World!</a></li><li class="chapter-item expanded "><a href="ch01-03-hello-scarb.html"><strong aria-hidden="true">1.3.</strong> Hello, Scarb!</a></li></ol></li><li class="chapter-item expanded "><a href="ch02-00-common-programming-concepts.html"><strong aria-hidden="true">2.</strong> Common Programming Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-variables-and-mutability.html"><strong aria-hidden="true">2.1.</strong> Variables and Mutability</a></li><li class="chapter-item expanded "><a href="ch02-02-data-types.html"><strong aria-hidden="true">2.2.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="ch02-03-functions.html"><strong aria-hidden="true">2.3.</strong> Functions</a></li><li class="chapter-item expanded "><a href="ch02-04-comments.html"><strong aria-hidden="true">2.4.</strong> Comments</a></li><li class="chapter-item expanded "><a href="ch02-05-control-flow.html"><strong aria-hidden="true">2.5.</strong> Control Flow</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -227,6 +227,29 @@ cairo: 1.0.0-alpha.6
 <li><code>src/lib.cairo</code></li>
 </ul>
 <h2 id="compile"><a class="header" href="#compile">Compile</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="common-programming-concepts"><a class="header" href="#common-programming-concepts">Common Programming Concepts</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="variables-and-mutability"><a class="header" href="#variables-and-mutability">Variables and Mutability</a></h1>
+<p>By default, variables are immutable. This is one of many nudges Cairo gives you to write your code in a way that takes advantage of the safety and easy concurrency that Cairo offers. However, you still have the option to make your variables mutable. Let’s explore how and why Cairo encourages you to favor immutability and why sometimes you might want to opt out.</p>
+<p>When a variable is immutable, once a value is bound to a name, you can’t change that value. To illustrate this, generate a new project called variables in your projects directory by using <code>scarb new variables</code></p>
+<p>Then, in your new variables directory, create <code>src/main.rs</code> and fill with the following code, which won’t compile:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 5;
+    debug::print_felt252(x);
+    x = 6;
+    debug::print_felt252(x);
+}</code></pre></pre>
+<p>Save and run the program using <code>cairo-run --path src/main.cairo</code>. You should receive an error message regarding an immutability error, as shown in this output:</p>
+<pre><code class="language-bash">error: Cannot assign to an immutable variable.
+ --&gt; main.cairo:4:5
+    x = 6;
+    ^***^
+
+Error: failed to compile: src/main.cairo
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="functions"><a class="header" href="#functions">Functions</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="comments"><a class="header" href="#comments">Comments</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="control-flow"><a class="header" href="#control-flow">Control Flow</a></h1>
 
                     </main>
 
