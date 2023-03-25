@@ -1,7 +1,6 @@
 # The Cairo Programming Language
 
-[The Cairo programming language](./ch00-01-title.md)
-[Foreword](./ch00-02-foreword.md)
+[The Cairo Programming Language](./ch00-01-title.md)
 [Introduction](./ch00-03-intro.md)
 
 ## Getting started
