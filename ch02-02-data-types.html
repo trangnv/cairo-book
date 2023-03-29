@@ -145,6 +145,80 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="data-types"><a class="header" href="#data-types">Data Types</a></h1>
+<p>Cairo has the following types:</p>
+<ul>
+<li>
+<h2 id="felt"><a class="header" href="#felt">Felt</a></h2>
+<p>In Cairo when you don’t specify a type of a variable/argument, its type is a field element (represented by the keyword <code>felt</code>). In the context of Cairo, when we say “a field element” we mean an integer in the range -P/2 &lt; x &lt; P/2 
+where 
+is a very large (prime) number (currently it is a 252-bit number, which is a number with 76 decimal digits). When we add, subtract or multiply and the result is outside the range above, there is an overflow, and the appropriate multiple of P
+is added or subtracted to bring the result back into this range (in other words, the result is computed modulo P).</p>
+<p>The most important difference between integers and field elements is division: Division of field elements (and therefore division in Cairo) is not the integer division you have in many programming languages, where the integral part of the quotient is returned (so you get <code>7 / 3 = 2</code>). As long as the numerator is a multiple of the denominator, it will behave as you expect (<code>6 / 3 = 2</code>). If this is not the case, for example when we divide <code>7/3</code>, it will result in a field element <code>x</code> that will satisfy <code>3 * x = 7</code>. It won’t be <code>2.3333</code> because x has to be an integer. If this seems impossible, remember that if <code>3 * x</code> is outside the range -P/2 &lt; x &lt; P/2 
+, an overflow will occur which can bring the result down to 7. It’s a well-known mathematical fact that unless the denominator is zero, there will always be a value x satisfying <code>denominator * x = numerator</code>.</p>
+</li>
+<li>
+<h2 id="boolean"><a class="header" href="#boolean">Boolean</a></h2>
+<p>Boolean are natively supported in cairo. It can then be used in if logic for example:</p>
+<pre><code>let is_morning = true;
+if is_morning {
+    debug::print_felt('Good morning!');
+}
+</code></pre>
+</li>
+<li>
+<h2 id="string"><a class="header" href="#string">String</a></h2>
+<p>You can put char or string inside felts too!</p>
+<pre><code>let mut my_first_initial = 'C';
+</code></pre>
+</li>
+<li>
+<h2 id="multiple-integer-type"><a class="header" href="#multiple-integer-type">Multiple integer type</a></h2>
+<p>Multiple integer types are available in the core library: <code>u8</code>, <code>u16</code>, <code>u32</code>, <code>u64</code>, <code>u128</code>, and <code>u256</code>. Even though they rely on the basic type felt under the hood, it is safer to use them if the context is appropriate. They support arithmetic operators, meaning that you can, for example, sum them with <code>let sum = 1_u128 + 2_u128</code>. These operators automatically check for overflows and panic if one is detected. This greatly improves the clarity of the code compared to using functions for basic arithmetic operations.</p>
+<pre><code>fn main() -&gt; u128 {
+    let _2e32 = 4294967296_u128;
+    _2e32 * _2e32 * _2e32 * (_2e32 - 1_u128) // ok
+    _2e32 * _2e32 * _2e32 * _2e32 // panic because it overflows
+}
+</code></pre>
+<p>If you try to sum two integers and the result is bigger than the biggest integer of this type, you'll get a compilation error.</p>
+<p>You can convert integers to felts using the <code>.into()</code> method. Make sure that you imported the <code>Into</code> trait.</p>
+<p>You can convert felts to integers using the <code>.try_into()</code> method. Make sure that you imported the <code>TryInto</code> trait.</p>
+<p>This method will return an <code>Option</code> type, so you'll need to unwrap it. To use the <code>unwrap()</code> method, you'll need to import the <code>OptionTrait</code> trait.</p>
+<h4 id="type-literals"><a class="header" href="#type-literals">Type literals</a></h4>
+<p>Numeric literals are fixed values for numbers, such as <code>1</code>, <code>2</code>, or <code>3</code>. These literals are <code>felts</code> by default, but using a suffix <code>_&lt;type&gt;</code> we can specify a specific type for our literal, such as <code>uint128</code> . You can use type literals as function arguments, improving code clarity and readability compared to the previous version of Cairo.</p>
+<p><code>let my_u128 = 1_u128;</code></p>
+</li>
+<li>
+<h2 id="struct"><a class="header" href="#struct">Struct</a></h2>
+<p>structs are a custom data type that provides a way to group values, defining a single entity that represents a collection of related values. We can define methods that can operate on the struct using a combination of impls and traits.
+In order to destructure a struct into multiple variables, you can use the following syntax: <code>let Point{x: a, y: b} = origin;</code></p>
+<pre><code>#[derive(Copy, Drop)]
+struct Point { x: felt, y: felt }
+
+fn main() -&gt; felt {
+    let mut origin = Point { x: 0, y: 0 };
+    let p = Point { x: 1, y: 2 };
+    let x = origin.x;
+    let Point{x: a, y: b } = origin;
+    a // returns 0
+}
+</code></pre>
+</li>
+<li>
+<h2 id="tuple"><a class="header" href="#tuple">Tuple</a></h2>
+<p>A tuple type is defined similarly to a tuple expression. For example, given two types <code>a</code> and <code>b</code>, the type <code>(a, b)</code> represents a tuple that consists of an element of type a and an element of type b. For example <code>(felt, felt)</code> may be used to represent a (2-dimensional) point.</p>
+<h4 id="named-tuple"><a class="header" href="#named-tuple">Named tuple</a></h4>
+<p>Cairo also supports named tuples, for example <code>(x: felt, y: felt)</code> represents a tuple similar to <code>(felt, felt)</code> except that the two items are named x and y, respectively.</p>
+<h4 id="user-defined-type-aliases"><a class="header" href="#user-defined-type-aliases">User-defined type aliases</a></h4>
+<p>You can give a new alias for a type as follows:</p>
+<p><code>using Point = (x: felt, y: felt);</code>
+Note that Point is not a new type in this case – it is only an alias to (x: felt, y: felt). You can use Point as an alias for this type.</p>
+<p>For example, you may replace</p>
+<p><code> local pt: (x: felt, y: felt) = (x=2, y=3);</code></p>
+<p>with:</p>
+<p><code>local pt: Point = (x=2, y=3);</code></p>
+</li>
+</ul>
 
                     </main>
 
