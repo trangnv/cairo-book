@@ -3,6 +3,8 @@
 The book is up on [trangnv.github.io/cairo-book](https://trangnv.github.io/cairo-book/)
 This is the source code for the book. It is written in markdown and compiled using [mdBook](https://rust-lang.github.io/mdBook/index.html)
 
+*Move development to community maintain one https://github.com/cairo-book/cairo-book.github.io*
+
 ## How to develop the book locally
 
 - Install mdBook following the instructions on [mdBook](https://rust-lang.github.io/mdBook/guide/installation.html)
